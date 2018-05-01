@@ -14,6 +14,8 @@
 package org.moqui.impl.webapp
 
 import groovy.transform.CompileStatic
+import groovy.json.JsonSlurper
+
 import org.moqui.context.ArtifactTarpitException
 import org.moqui.context.AuthenticationRequiredException
 import org.moqui.context.ArtifactAuthorizationException
@@ -31,7 +33,6 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.ServletException
-
 
 @CompileStatic
 class MoquiServlet extends HttpServlet {
@@ -80,6 +81,12 @@ class MoquiServlet extends HttpServlet {
             activeEc.destroy()
         }
         ExecutionContextImpl ec = ecfi.getEci()
+
+        // if CORS request, just return a CORS response
+        if ( isCORSRequest(request) ) {
+            sendCORSJsonResponse( response, ec )
+            return
+        }
 
         /** NOTE to set render settings manually do something like this, but it is not necessary to set these things
          * for a web page render because if we call render(request, response) it can figure all of this out as defaults
@@ -143,6 +150,65 @@ class MoquiServlet extends HttpServlet {
             // make sure everything is cleaned up
             ec.destroy()
         }
+    }
+
+    static boolean isCORSRequest(HttpServletRequest request) {
+        String meth = request.getMethod()
+        String acrm = request.getHeader("Access-Control-Request-Method")
+        String acrh = request.getHeader("Access-Control-Request-Headers")
+
+        if ( !"OPTIONS".equals(meth) ) return false
+        if ( (null != acrm) && (null != acrh) ) {
+            return true
+        }
+
+        return false
+    }
+
+    static void sendCORSJsonResponse( HttpServletResponse response, ExecutionContextImpl ec ) {
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+        response.addHeader("Access-Control-Allow-Credentials", "true")
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
+
+        response.setStatus(HttpServletResponse.SC_OK)
+        response.setContentType("application/json")
+
+        // NOTE: String.length not correct for byte length
+        String charset = response.getCharacterEncoding() ?: "UTF-8"
+        String jsonStr = "{\"response\" : \"CORS request ok\"}"
+        int length = jsonStr.getBytes(charset).length
+        response.setContentLength(length)
+
+        try {
+            response.writer.write(jsonStr)
+            response.writer.flush()
+        } catch (IOException e) {
+            logger.error("sendCORSJsonResponse() Error sending CORS response", e)
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "System error, try again.")
+        }
+    }
+
+    static Map<String, String> getConfiguredCORSElements(ExecutionContextImpl ec) {
+        //Map<String, String> corsitems = new HashMap<String, String>();
+        Map<String, String> corsitems = null;
+
+        boolean cache = true
+        String location = "C:/workspace/moqui/dcubeapp/moqui-framework/corsitems.json"
+        try {
+            String corsText = ec.getResource().getLocationText(location, false)
+            logger.info("getConfiguredCORSElements() corsText: $corsText")
+            if (corsText != null && corsText.length() > 0) {
+                corsitems = (Map<String, String>)new JsonSlurper().parseText(corsText)
+                String corsOrigin = corsitems.get("Access-Control-Allow-Origin")
+                logger.info("getConfiguredCORSElements() Access-Control-Allow-Origin: $corsOrigin")
+            }
+            logger.info("getConfiguredCORSElements() corsitems: $corsitems")
+        } catch (IOException e) {
+            logger.error("getConfiguredCORSElements() Error getting CORS elements", e)
+        }
+
+        return corsitems;
     }
 
     static void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, int errorCode, String errorType,

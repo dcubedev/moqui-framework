@@ -1,0 +1,6 @@
+{
+    "Access-Control-Allow-Origin" : "http://localhost:8100",
+    "Access-Control-Allow-Credentials" : "true",
+    "Access-Control-Allow-Methods" : "GET, POST, DELETE, PUT, OPTIONS",
+    "Access-Control-Allow-Headers" : "Content-Type, Authorization, api_key, header"
+}

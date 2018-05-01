@@ -632,6 +632,11 @@ class WebFacadeImpl implements WebFacade {
     static void sendJsonResponseInternal(Object responseObj, ExecutionContextImpl eci, HttpServletRequest request,
                                          HttpServletResponse response, Map<String, Object> requestAttributes) {
         String jsonStr = null
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+        response.addHeader("Access-Control-Allow-Credentials", "true")
+
+        logger.warn("entering sendJsonResponseInternal() ========== Sending JSON for object: ${responseObj}")
+
         if (responseObj instanceof CharSequence) {
             jsonStr = responseObj.toString()
             responseObj = null
@@ -738,7 +743,14 @@ class WebFacadeImpl implements WebFacade {
         }
 
         try {
-            if (responseText) response.writer.write(responseText)
+            if (responseText) {
+                logger.warn("SA SA SA sendTextResponseInternal() ========== Sending text: ${responseText}")
+                response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+                response.addHeader("Access-Control-Allow-Credentials", "true")
+                response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
+                response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
+                response.writer.write(responseText)
+            }
             response.writer.flush()
             if (logger.infoEnabled) {
                 Long startTime = (Long) requestAttributes.get("moquiRequestStartTime")
