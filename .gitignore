@@ -1,5 +1,4 @@
 # separate addons file to add/override components
-myaddons.xml
 
 # gradle/build files
 build
