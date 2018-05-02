@@ -5,27 +5,27 @@
     -->
 
     <repository name="github">
-        <location type="current" url="https://github.com/dcubedev/${component.'@name'}/archive/${component.'@branch'}.zip"/>
-        <location type="release" url="https://github.com/dcubedev//${component.'@name'}/archive/v${component.'@version'}.zip"/>
-        <location type="binary" url="https://github.com/dcubedev/${component.'@name'}/releases/download/v${component.'@version'}/${component.'@name'}-${component.'@version'}.zip"/>
-        <location type="git" url="https://github.com/dcubedev/${component.'@name'}.git"/>
+        <location type="current" url="https://github.com/${component.'@group'}/${component.'@name'}/archive/${component.'@branch'}.zip"/>
+        <location type="release" url="https://github.com/${component.'@group'}/${component.'@name'}/archive/v${component.'@version'}.zip"/>
+        <location type="binary" url="https://github.com/${component.'@group'}/${component.'@name'}/releases/download/v${component.'@version'}/${component.'@name'}-${component.'@version'}.zip"/>
+        <location type="git" url="https://github.com/${component.'@group'}/${component.'@name'}.git"/>
     </repository>
     <repository name="github-ssh">
-        <location type="current" url="https://github.com/dcubedev/${component.'@name'}/archive/${component.'@branch'}.zip"/>
-        <location type="release" url="https://github.com/dcubedev/${component.'@name'}/archive/v${component.'@version'}.zip"/>
-        <location type="binary" url="https://github.com/dcubedev/${component.'@name'}/releases/download/v${component.'@version'}/${component.'@name'}-${component.'@version'}.zip"/>
-        <location type="git" url="git@github.com/dcubedev:${component.'@name'}.git"/>
+        <location type="current" url="https://github.com/${component.'@group'}/${component.'@name'}/archive/${component.'@branch'}.zip"/>
+        <location type="release" url="https://github.com/${component.'@group'}/${component.'@name'}/archive/v${component.'@version'}.zip"/>
+        <location type="binary" url="https://github.com/${component.'@group'}/${component.'@name'}/releases/download/v${component.'@version'}/${component.'@name'}-${component.'@version'}.zip"/>
+        <location type="git" url="git@github.com:${component.'@group'}/${component.'@name'}.git"/>
     </repository>
 
     <!-- Where to get runtime directory if not present -->
-    <runtime name="moqui-runtime" version="2.1.0" branch="master"/>
+    <runtime name="moqui-runtime" group="dcubedev" version="2.1.0" branch="master"/>
 
     <!-- ServiceRequest Component -->
-	<component name="dcubeapp-moqui" version="2.1.0" branch="master"/>
+	<component name="dcubeapp-moqui" group="dcubedev" version="2.1.0" branch="master"/>
 	
 	<!-- Mantle Components -->
-    <component name="mantle-udm" version="2.0.0" branch="master"/>
-    <component name="mantle-usl" version="2.0.0" branch="master"/>
+    <component name="mantle-udm" group="dcubedev" version="2.0.0" branch="master"/>
+    <component name="mantle-usl" group="dcubedev" version="2.0.0" branch="master"/>
 	
 	<!-- Component Sets -->
     <component-set name="demo-dcubeapp" components="dcubeapp-moqui,mantle-udm,mantle-usl"/>
