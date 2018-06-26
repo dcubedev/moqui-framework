@@ -632,6 +632,9 @@ class WebFacadeImpl implements WebFacade {
         response.setContentLength(length)
 
         try {
+            response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+            response.addHeader("Access-Control-Allow-Credentials", "true")
+            response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token, api_key")
             response.writer.write(jsonStr)
             response.writer.flush()
             if (logger.isTraceEnabled()) {
@@ -693,6 +696,9 @@ class WebFacadeImpl implements WebFacade {
         }
 
         try {
+            response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+            response.addHeader("Access-Control-Allow-Credentials", "true")
+            response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token, api_key")
             if (responseText) response.writer.write(responseText)
             response.writer.flush()
             if (logger.infoEnabled) {

@@ -50,6 +50,12 @@ class MoquiServlet extends HttpServlet {
         ExecutionContextFactoryImpl ecfi = (ExecutionContextFactoryImpl) getServletContext().getAttribute("executionContextFactory")
         String webappName = getInitParameter("moqui-name") ?: getServletContext().getInitParameter("moqui-name")
 
+        // if CORS request, just return a CORS response
+        if ( isCORSRequest(request) ) {
+            sendCORSJsonResponse( response )
+            return
+        }
+
         // check for and cleanly handle when executionContextFactory is not in place in ServletContext attr
         if (ecfi == null || webappName == null) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "System is initializing, try again soon.")
@@ -141,6 +147,42 @@ class MoquiServlet extends HttpServlet {
         for (def aei in ec.artifactExecution.history) hits.append("\n").append(aei)
         logger.info(hits.toString())
          */
+    }
+
+    static boolean isCORSRequest(HttpServletRequest request) {
+        String meth = request.getMethod()
+        String acrm = request.getHeader("Access-Control-Request-Method")
+        String acrh = request.getHeader("Access-Control-Request-Headers")
+           
+        if ( !"OPTIONS".equals(meth) ) return false
+        if ( (null != acrm) && (null != acrh) ) {
+            return true
+        }
+             
+        return false
+    }
+
+    static void sendCORSJsonResponse( HttpServletResponse response ) {
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
+        response.addHeader("Access-Control-Allow-Credentials", "true")
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, header, api_key")
+
+        response.setStatus(HttpServletResponse.SC_OK)
+        response.setContentType("application/json")
+
+        // NOTE: String.length not correct for byte length
+        String charset = response.getCharacterEncoding() ?: "UTF-8"
+        String jsonStr = "{\"response\" : \"CORS request ok\"}"
+        int length = jsonStr.getBytes(charset).length
+        response.setContentLength(length)
+
+        try {
+            response.writer.write(jsonStr)
+            response.writer.flush()
+        } catch (IOException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "System error, try again.")
+        }
     }
 
     static void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, int errorCode, String errorType,
