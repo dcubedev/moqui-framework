@@ -56,3 +56,9 @@ Desktop.ini
 
 # Linux auto files
 *~
+framework/.project
+.project
+.vscode/settings.json
+framework/.classpath
+moqui-util/.classpath
+moqui-util/.project
