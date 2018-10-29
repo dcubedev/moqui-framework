@@ -32,6 +32,8 @@ import java.sql.Timestamp
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import java.util.concurrent.RejectedExecutionException
+
 @CompileStatic
 class EntityDataFeed {
     protected final static Logger logger = LoggerFactory.getLogger(EntityDataFeed.class)
@@ -127,12 +129,15 @@ class EntityDataFeed {
                 // only add value if a field in the document was changed
                 boolean fieldModified = false
                 for (String fieldName in entityInfo.fields) {
+                    // logger.warn("DataFeed ${entityInfo.dataDocumentId} check field ${fieldName} isUpdate ${isUpdate} isFieldModified ${ev.isFieldModified(fieldName)} value ${valueMap.get(fieldName)} oldValue ${oldValues?.get(fieldName)}")
                     if (ev.isFieldModified(fieldName)) { fieldModified = true; break }
 
                     if (!valueMap.containsKey(fieldName)) continue
 
                     Object value = valueMap.get(fieldName)
                     Object oldValue = oldValues?.get(fieldName)
+
+                    // logger.warn("DataFeed ${entityInfo.dataDocumentId} check field ${fieldName} isUpdate ${isUpdate} value ${value} oldValue ${oldValue} continue ${(isUpdate && value == oldValue) || (!isUpdate && value == null)}")
 
                     // if isUpdate but old value == new value, then it hasn't been updated, so skip it
                     if (isUpdate && value == oldValue) continue
@@ -422,7 +427,11 @@ class EntityDataFeed {
             if (status == Status.STATUS_COMMITTED) {
                 // send feed in new thread and tx
                 FeedRunnable runnable = new FeedRunnable(ecfi, edf, feedValues, allDataDocumentIds)
-                ecfi.workerPool.execute(runnable)
+                try {
+                    ecfi.workerPool.execute(runnable)
+                } catch (RejectedExecutionException e) {
+                    logger.error("Worker pool rejected DataFeed run: " + e.toString())
+                }
                 // logger.warn("================================================================\n================ feeding DataFeed with documents ${allDataDocumentIds}")
             }
         }
