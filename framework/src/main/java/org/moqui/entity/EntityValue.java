@@ -138,6 +138,7 @@ public interface EntityValue extends Map<String, Object>, Externalizable, Compar
      * @return reference to this for convenience
      */
     EntityValue setSequencedIdPrimary();
+    EntityValue setSequencedIdFormatted(String seqName);
 
     /** Look at existing values with the same primary sequenced ID (first PK field) and get the highest existing
      * value for the secondary sequenced ID (the second PK field), add 1 to it and set the result in this entity value.

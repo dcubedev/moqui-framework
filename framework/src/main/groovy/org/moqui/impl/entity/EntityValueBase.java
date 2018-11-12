@@ -475,6 +475,36 @@ public abstract class EntityValueBase implements EntityValue {
     }
 
     @Override
+    public EntityValue setSequencedIdFormatted(String seqName) {
+        EntityFacadeImpl localEfi = getEntityFacadeImpl();
+        
+        try {
+            EntityValue svi = localEfi.find("moqui.entity.sequenceValueFormatted")
+                                      .condition("seqName", seqName)
+                                      .useCache(false)
+                                      .forUpdate(true)
+                                      .one();
+            if (null != svi) {
+                Long seqNum = svi.getLong("seqNum") + 1;
+                Long numDigits = svi.getLong("numDigits");
+                String fmt = String.format("%s%d%s", "%0", numDigits, "d");
+                String fmtSeqNum = String.format(fmt, seqNum);
+
+                // set next sequence number
+                svi.set("seqNum", seqNum);
+                svi.update();
+
+                // set formatted text for the given sequence field
+                putNoCheck(seqName, fmtSeqNum);
+            }
+        } catch (Exception ex) {
+            logger.info( "EntityValueBase::setSequencedIdFormatted() Exception: " + ex);
+        }
+
+        return this;
+    }
+
+    @Override
     public EntityValue setSequencedIdSecondary() {
         EntityDefinition ed = getEntityDefinition();
         List<String> pkFields = ed.getPkFieldNames();
