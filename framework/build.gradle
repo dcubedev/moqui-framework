@@ -97,7 +97,11 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.8.1' // Apache 2.0; used by cron-utils
     compile 'commons-beanutils:commons-beanutils:1.9.3' // Apache 2.0
     compile 'commons-collections:commons-collections:3.2.2' // Apache 2.0
-    compile 'commons-digester:commons-digester:2.1' // Apache 2.0
+    compile ('commons-digester:commons-digester:2.1')
+       {
+          //by both name and group
+          exclude group: 'commons-beanutils', module: 'commons-beanutils'   
+       }
     compile 'commons-fileupload:commons-fileupload:1.3.3' // Apache 2.0
     compile 'commons-io:commons-io:2.6' // Apache 2.0
     compile 'commons-logging:commons-logging:1.2' // Apache 2.0

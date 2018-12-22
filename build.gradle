@@ -314,6 +314,10 @@ task addRuntimeTomcat {
     dependsOn deployTomcatRuntime
 }
 
+subprojects {
+    task allDeps(type: DependencyReportTask) {}
+}
+
 // ========== component tasks ==========
 
 task getDefaults {
