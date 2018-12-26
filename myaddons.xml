@@ -18,18 +18,24 @@
     </repository>
 
     <!-- Where to get runtime directory if not present -->
-    <runtime name="moqui-runtime" group="dcubedev" version="2.1.0" branch="master"/>
-
-    <!-- ServiceRequest Component 
-	<component name="dcubeapp-moqui" group="dcubedev" version="2.1.0" branch="master"/>
-	-->
+    <runtime name="moqui-runtime" group="dcubedev" version="2.1.1" branch="master"/>
+    <runtime name="moqui-framework" group="dcubedev" version="2.1.1" branch="master"/>
 	
 	<!-- Mantle Components -->
-    <component name="mantle-udm" group="dcubedev" version="2.0.0" branch="master"/>
-    <component name="mantle-usl" group="dcubedev" version="2.0.0" branch="master"/>
+    <component name="mantle-udm" group="dcubedev" version="2.1.0" branch="master"/>
+    <component name="mantle-usl" group="dcubedev" version="2.1.0" branch="master"/>
+    <component name="mantle-braintree" group="dcubedev" branch="master"/>
+    <component name="moqui-elasticsearch" group="dcubedev" version="1.2.0" branch="master"/>
+    <component name="SimpleScreens" group="dcubedev" version="2.1.0" branch="master"/>
+    <component name="PopCommerce" group="dcubedev" version="2.1.0" branch="master"/>
 	
 	<!-- Component Sets -->
     <component-set name="demo-dcubeapp" components="dcubeapp-moqui,mantle-udm,mantle-usl"/>
+
+    <!-- ServiceRequest Component 
+    <runtime name="moqui-runtime" group="dcubedev" version="2.1.0" branch="master"/>
+	<component name="dcubeapp-moqui" group="dcubedev" version="2.1.0" branch="master"/>
+	-->
 
     <!-- Release builds:
         gradle getComponentSet -PcomponentSet=demo -PlocationType=release
