@@ -68,7 +68,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Uom abbreviation="FKP" description="Falkland Pound" uomId="FKP" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
     <moqui.basic.Uom abbreviation="GBP" description="British Pound" uomId="GBP" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
     <moqui.basic.Uom abbreviation="GEK" description="Georgian Kupon" uomId="GEK" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
-    <moqui.basic.Uom abbreviation="GHC" description="Ghanian Cedi" uomId="GHC" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
+    <moqui.basic.Uom abbreviation="GHS" description="Ghanaian Cedi" uomId="GHS" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
     <moqui.basic.Uom abbreviation="GIP" description="Gibraltar Pound" uomId="GIP" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
     <moqui.basic.Uom abbreviation="GMD" description="Gambian Dalasi" uomId="GMD" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
     <moqui.basic.Uom abbreviation="GNF" description="Guinea Franc" uomId="GNF" uomTypeEnumId="UT_CURRENCY_MEASURE"/>
