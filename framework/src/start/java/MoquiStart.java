@@ -159,7 +159,8 @@ public class MoquiStart {
         String runtimePath = System.getProperty("moqui.runtime");
 
         try {
-            int port = 8080;
+            //int port = 8080;
+            int port = 8888;
             String portStr = argMap.get("port");
             if (portStr != null && portStr.length() > 0) port = Integer.parseInt(portStr);
             int threads = 100;
