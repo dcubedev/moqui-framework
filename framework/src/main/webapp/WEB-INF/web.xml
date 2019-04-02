@@ -1,23 +1,52 @@
 <?xml version="1.0"?>
-<web-app version="3.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>Moqui Root Webapp</display-name>
 
     <context-param>
         <description>The name of the Moqui webapp used to lookup configuration in the moqui-conf.webapp-list.webapp.@moqui-name attribute.</description>
-        <param-name>moqui-name</param-name><param-value>webroot</param-value>
+        <param-name>moqui-name</param-name>
+        <param-value>webroot</param-value>
     </context-param>
 
     <!-- Moqui Context Listener (necessary to init Moqui, etc) -->
-    <listener><listener-class>org.moqui.impl.webapp.MoquiContextListener</listener-class></listener>
+    <listener>
+        <listener-class>org.moqui.impl.webapp.MoquiContextListener</listener-class>
+    </listener>
 
     <!-- Apache Commons FileUpload Cleanup; this must be configured here as it is a ServletContextListener -->
-    <listener><listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class></listener>
+    <listener>
+        <listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
+    </listener>
 
     <session-config>
         <!-- session timeout in minutes; note that this may be overridden with webapp.session-config.@timeout in the Moqui Conf XML file -->
         <session-timeout>60</session-timeout>
-        <cookie-config><http-only>true</http-only></cookie-config>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
+
+    <filter>
+        <filter-name>cross-origin</filter-name>
+        <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
+        <init-param>
+            <param-name>allowedOrigins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedMethods</param-name>
+            <param-value>GET,POST,OPTIONS,DELETE,PUT,HEAD</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedHeaders</param-name>
+            <param-value>origin, content-type, accept, authorization</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>cross-origin</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
 </web-app>

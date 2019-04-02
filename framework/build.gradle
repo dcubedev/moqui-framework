@@ -188,6 +188,7 @@ dependencies {
 
     // ========== executable war dependencies ==========
     // Jetty
+    execWarRuntime 'org.eclipse.jetty:jetty-servlets:9.4.12.v20180830' // Apache 2.0
     execWarRuntime 'org.eclipse.jetty:jetty-server:9.4.12.v20180830' // Apache 2.0
     execWarRuntime 'org.eclipse.jetty:jetty-webapp:9.4.12.v20180830' // Apache 2.0
     execWarRuntime 'org.eclipse.jetty:jetty-jndi:9.4.12.v20180830' // Apache 2.0
