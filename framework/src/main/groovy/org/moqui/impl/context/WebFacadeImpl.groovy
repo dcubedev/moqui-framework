@@ -637,7 +637,7 @@ class WebFacadeImpl implements WebFacade {
         //response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
         //response.addHeader("Access-Control-Allow-Origin", "https://ed3f969f.ngrok.io")
         //response.addHeader("Access-Control-Allow-Origin", "*")
-        response.addHeader("Access-Control-Allow-Credentials", "true")
+        //response.addHeader("Access-Control-Allow-Credentials", "true")
 
         logger.warn("entering sendJsonResponseInternal() ========== Sending JSON for object: ${responseObj}")
 
@@ -752,10 +752,10 @@ class WebFacadeImpl implements WebFacade {
                 //response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
                 //response.addHeader("Access-Control-Allow-Origin", "https://ed3f969f.ngrok.io")
                 //response.addHeader("Access-Control-Allow-Origin", "*")
-                response.addHeader("Access-Control-Allow-Credentials", "true")
-                response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
-                response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
-                response.writer.write(responseText)
+                //response.addHeader("Access-Control-Allow-Credentials", "true")
+                //response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
+                //response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
+                //response.writer.write(responseText)
             }
             response.writer.flush()
             if (logger.infoEnabled) {

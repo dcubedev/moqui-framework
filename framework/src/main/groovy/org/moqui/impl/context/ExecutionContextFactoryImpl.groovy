@@ -43,6 +43,7 @@ import org.moqui.impl.context.ContextJavaUtil.ArtifactHitInfo
 import org.moqui.impl.entity.EntityFacadeImpl
 import org.moqui.impl.screen.ScreenFacadeImpl
 import org.moqui.impl.service.ServiceFacadeImpl
+import org.moqui.impl.webapp.ChatWebSocketListener
 import org.moqui.impl.webapp.NotificationWebSocketListener
 import org.moqui.screen.ScreenFacade
 import org.moqui.service.ServiceFacade
@@ -130,6 +131,7 @@ class ExecutionContextFactoryImpl implements ExecutionContextFactory {
     /** Notification Message Topic (for distributed notifications) */
     private SimpleTopic<NotificationMessageImpl> notificationMessageTopic = null
     private NotificationWebSocketListener notificationWebSocketListener = new NotificationWebSocketListener()
+	private ChatWebSocketListener chatWebSocketListener = new ChatWebSocketListener()
 
     protected ArrayList<LogEventSubscriber> logEventSubscribers = new ArrayList<>()
 
@@ -500,6 +502,7 @@ class ExecutionContextFactoryImpl implements ExecutionContextFactory {
 
         // register notificationWebSocketListener
         registerNotificationMessageListener(notificationWebSocketListener)
+		registerNotificationMessageListener(chatWebSocketListener)
 
         // Load ToolFactory implementations from tools.tool-factory elements, run preFacadeInit() methods
         ArrayList<Map<String, String>> toolFactoryAttrsList = new ArrayList<>()
@@ -847,7 +850,8 @@ class ExecutionContextFactoryImpl implements ExecutionContextFactory {
         })
         workerPool.execute(runnable)
     }
-    NotificationWebSocketListener getNotificationWebSocketListener() { return notificationWebSocketListener }
+    ChatWebSocketListener getChatWebSocketListener() { return chatWebSocketListener }
+	NotificationWebSocketListener getNotificationWebSocketListener() { return notificationWebSocketListener }
 
     org.apache.shiro.mgt.SecurityManager getSecurityManager() {
         if (internalSecurityManager != null) return internalSecurityManager

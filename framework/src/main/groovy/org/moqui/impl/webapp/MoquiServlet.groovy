@@ -169,9 +169,9 @@ class MoquiServlet extends HttpServlet {
         //response.addHeader("Access-Control-Allow-Origin", "http://localhost:8100")
         //response.addHeader("Access-Control-Allow-Origin", "https://ed3f969f.ngrok.io")
         //response.addHeader("Access-Control-Allow-Origin", "*")
-        response.addHeader("Access-Control-Allow-Credentials", "true")
-        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
-        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
+        //response.addHeader("Access-Control-Allow-Credentials", "true")
+        //response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
+        //response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, api_key, header")
 
         response.setStatus(HttpServletResponse.SC_OK)
         response.setContentType("application/json")
@@ -189,28 +189,6 @@ class MoquiServlet extends HttpServlet {
             logger.error("sendCORSJsonResponse() Error sending CORS response", e)
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "System error, try again.")
         }
-    }
-
-    static Map<String, String> getConfiguredCORSElements(ExecutionContextImpl ec) {
-        //Map<String, String> corsitems = new HashMap<String, String>();
-        Map<String, String> corsitems = null;
-
-        boolean cache = true
-        String location = "C:/workspace/moqui/dcubeapp/moqui-framework/corsitems.json"
-        try {
-            String corsText = ec.getResource().getLocationText(location, false)
-            logger.info("getConfiguredCORSElements() corsText: $corsText")
-            if (corsText != null && corsText.length() > 0) {
-                corsitems = (Map<String, String>)new JsonSlurper().parseText(corsText)
-                String corsOrigin = corsitems.get("Access-Control-Allow-Origin")
-                logger.info("getConfiguredCORSElements() Access-Control-Allow-Origin: $corsOrigin")
-            }
-            logger.info("getConfiguredCORSElements() corsitems: $corsitems")
-        } catch (IOException e) {
-            logger.error("getConfiguredCORSElements() Error getting CORS elements", e)
-        }
-
-        return corsitems;
     }
 
     static void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, int errorCode, String errorType,

@@ -38,11 +38,11 @@
         </init-param>
         <init-param>
             <param-name>allowedMethods</param-name>
-            <param-value>GET,POST,OPTIONS,DELETE,PUT,HEAD</param-value>
+            <param-value>GET,POST,OPTIONS,DELETE,PUT</param-value>
         </init-param>
         <init-param>
             <param-name>allowedHeaders</param-name>
-            <param-value>origin, content-type, accept, authorization</param-value>
+            <param-value>Content-Type, Authorization, api_key, header, origin, accept</param-value>
         </init-param>
     </filter>
     <filter-mapping>
